@@ -30,8 +30,12 @@ foreach ([
     'MaytesApiClient\WebhookVerifier',
     'MaytesApiClient\Configuration',
     'MaytesApiClient\Api\DefaultApi',
-    'MaytesApiClient\Model\CreateCheckoutRequestContent',
+    'MaytesApiClient\Model\CreateCheckoutRequest',
+    // The discriminated-union parent AND the variant a caller actually
+    // constructs. `LineItem` alone passing proves little: the parent exists in
+    // any generation, while a missing variant is how the union breaks.
     'MaytesApiClient\Model\LineItem',
+    'MaytesApiClient\Model\OtherLineItem',
 ] as $class) {
     check($class, class_exists($class));
 }
