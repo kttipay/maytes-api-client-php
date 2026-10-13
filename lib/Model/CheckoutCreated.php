@@ -86,7 +86,7 @@ class CheckoutCreated implements ModelInterface, ArrayAccess, \JsonSerializable
         'checkout_uuid' => false,
         'status' => false,
         'checkout_url' => false,
-        'expires_at' => false
+        'expires_at' => true
     ];
 
     /**
@@ -304,8 +304,8 @@ class CheckoutCreated implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['checkout_url'] === null) {
             $invalidProperties[] = "'checkout_url' can't be null";
         }
-        if ($this->container['expires_at'] === null) {
-            $invalidProperties[] = "'expires_at' can't be null";
+        if ($this->container['expires_at'] === null && !$this->isNullableSetToNull('expires_at')) {
+            $invalidProperties[] = "'expires_at' is required";
         }
         return $invalidProperties;
     }
@@ -406,7 +406,7 @@ class CheckoutCreated implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets expires_at
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getExpiresAt()
     {
@@ -416,14 +416,21 @@ class CheckoutCreated implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets expires_at
      *
-     * @param \DateTime $expires_at expires_at
+     * @param \DateTime|null $expires_at expires_at
      *
      * @return self
      */
     public function setExpiresAt($expires_at)
     {
         if (is_null($expires_at)) {
-            throw new \InvalidArgumentException('non-nullable expires_at cannot be null');
+            array_push($this->openAPINullablesSetToNull, 'expires_at');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('expires_at', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
         $this->container['expires_at'] = $expires_at;
 
